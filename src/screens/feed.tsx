@@ -111,14 +111,32 @@ function Feed(props: any): React.JSX.Element {
   };
 
   const requestCameraPermission = async () => {
-    checkManagePermission().then(isManagePermitted => {
-      console.log(isManagePermitted);
-      if (!isManagePermitted) {
-        requestManagePermission().then(isManagePermitted => {
-          console.log(isManagePermitted);
-        });
-      }
-    });
+    if (Platform.Version <= '28') {
+      PermissionsAndroid.check('android.permission.READ_EXTERNAL_STORAGE').then(
+        async response => {
+          console.log(
+            'Notification: ',
+            response,
+            PermissionsAndroid.PERMISSIONS,
+          );
+
+          if (!response) {
+            await PermissionsAndroid.request(
+              'android.permission.READ_EXTERNAL_STORAGE',
+            );
+          }
+        },
+      );
+    } else {
+      checkManagePermission().then(isManagePermitted => {
+        console.log(isManagePermitted);
+        if (!isManagePermitted) {
+          requestManagePermission().then(isManagePermitted => {
+            console.log(isManagePermitted);
+          });
+        }
+      });
+    }
   };
 
   const renderFileItem = ({item}: {item: string}) => {
