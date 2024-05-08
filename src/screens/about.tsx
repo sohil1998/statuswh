@@ -51,7 +51,7 @@ const About: React.FC = (props: any) => {
       <View
         style={[
           globalStyles.rowSpAround,
-          {bottom: verticalScale(50), position: 'absolute'},
+          {bottom: verticalScale(120), position: 'absolute'},
         ]}>
         <TouchableOpacity
           style={styles.socialItem}
@@ -115,6 +115,15 @@ const About: React.FC = (props: any) => {
           />
         </TouchableOpacity>
       </View>
+      <Text
+        style={{
+          fontSize: moderateScale(15),
+          color: COLORS.color1,
+          bottom: verticalScale(60),
+          position: 'absolute',
+        }}>
+        1.0
+      </Text>
 
       <Text style={styles.createdBy}>Created by Sohil</Text>
     </View>

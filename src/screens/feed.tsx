@@ -15,6 +15,7 @@ import {
   RefreshControl,
   AppState,
   StatusBar,
+  Platform,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -73,8 +74,11 @@ function Feed(props: any): React.JSX.Element {
 
   const getFiles = () => {
     // const path = `${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses`;
-    const path = `${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses`;
-    console.log('path => ', path);
+    const path =
+      Platform.Version <= '28'
+        ? `${RNFetchBlob.fs.dirs.SDCardDir}/WhatsApp/Media/.Statuses`
+        : `${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses`;
+
     RNFetchBlob.fs
       .ls(path)
       .then(data => {
@@ -118,7 +122,10 @@ function Feed(props: any): React.JSX.Element {
   };
 
   const renderFileItem = ({item}: {item: string}) => {
-    const fileUri = `file://${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/${item}`;
+    const fileUri =
+      Platform.Version <= '28'
+        ? `file://${RNFetchBlob.fs.dirs.SDCardDir}/WhatsApp/Media/.Statuses/${item}`
+        : `file://${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/${item}`;
 
     return (
       <TouchableOpacity
@@ -275,7 +282,10 @@ function Feed(props: any): React.JSX.Element {
               const dataWithUrl: string[] = [];
               selectedFiles.map(i => {
                 dataWithUrl.push(
-                  `file://${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/${i}`,
+                  // `file://${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/${i}`,
+                  Platform.Version <= '28'
+                    ? `file://${RNFetchBlob.fs.dirs.SDCardDir}/WhatsApp/Media/.Statuses/${i}`
+                    : `file://${RNFetchBlob.fs.dirs.SDCardDir}/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/${i}`,
                 );
               });
               const shareOptions = {
